@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER innFactory "https://innFactory"
+MAINTAINER innFactory "https://innFactory.de"
 #thanks to gettyimage for this base template!
 
 RUN apt-get update \
