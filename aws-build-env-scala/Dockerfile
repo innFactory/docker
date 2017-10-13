@@ -11,4 +11,6 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B
 RUN apt-get update -y 
 RUN apt-get install -y sbt 
 RUN apt-get -y install python-pip
-RUN pip install --upgrade awscli
+RUN PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN pip install awscli --upgrade
+RUN aws --version
