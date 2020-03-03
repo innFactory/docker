@@ -1,0 +1,1 @@
+docker build -t "innfactory/akka-persistence-jdbc-postgres:10.5" .

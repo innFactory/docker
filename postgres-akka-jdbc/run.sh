@@ -1,0 +1,1 @@
+docker run -d -p 5432:5432 -e POSTGRES_USER=innfactory -e POSTGRES_PASSWORD=innfactorypw -e POSTGRES_DB=ifdb  innfactory/postgres-akka-persistence

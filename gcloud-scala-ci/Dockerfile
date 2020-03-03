@@ -1,23 +1,16 @@
-FROM circleci/openjdk:8-jdk
+FROM circleci/openjdk:11.0.6-jdk-stretch
 MAINTAINER innFactory "https://innFactory.de"
 
-RUN sudo apt-get -qy install lsb-release apt-utils
+RUN sudo apt-get update && echo "Install gcloud sdk" && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+RUN sudo apt-get install apt-transport-https ca-certificates gnupg 
+RUN sudo apt-get update && sudo apt-get install google-cloud-sdk
 
-RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -c -s) main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add 
+RUN echo "Install AWS sdk" && cd $HOME && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    sudo $HOME/aws/install
 
-RUN sudo apt-get -qy update && sudo apt-get -qy install kubectl google-cloud-sdk kubectl && \
-    sudo apt-get install apt-transport-https -y
+RUN sudo apt-get install python3-pip && \
+    pip3 install jinja2
 
-RUN sudo apt-get install python-dev python-setuptools && \
-    sudo easy_install j2cli
-
-RUN wget -qO - https://downloads.lightbend.com/rp/keys/bintray-debian | \
-    sudo apt-key add - && \
-    echo "deb https://dl.bintray.com/lightbend/deb $(lsb_release -cs) main" | \
-    sudo tee /etc/apt/sources.list.d/lightbend.list 
-
-RUN sudo apt-get update && \
-    sudo apt-get install reactive-cli 
-
-RUN rp version && echo $PATH && j2 --version 
+RUN gcloud --version &&  aws --version && echo "innFactory Cloud CI Image finished."
